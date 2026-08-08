@@ -17,39 +17,84 @@ body{
     background:#0f1c2e; 
     color:white;
     height: 100vh;
-    height: -webkit-fill-available;
+    height: -webkit-fill-available; /* لحل مشاكل المتصفحات على الهواتف */
     display:flex;
     justify-content:center;
     align-items:center;
     overflow: hidden;
 }
 
-/* ===== حاوية الهاتف ===== */
-.container{
+/* ===== شاشة البدء المعدلة (SPLASH APP) ===== */
+.splash{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#0f1c2e;
     display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    transition: opacity 0.5s ease;
+    /* إضافة حماية سفلية لمنع اختفاء النصوص تحت حافة الشاشة */
+    padding-bottom: env(safe-area-inset-bottom, 40px); 
+}
+
+.splash svg{
+    width:110px; /* تم تصغيره قليلاً ليتناسق */
+    height:110px;
+    margin-bottom: 20px;
+}
+
+.metaSplash {
+    position: absolute;
+    bottom: calc(40px + env(safe-area-inset-bottom)); /* رفع النص ديناميكياً للأعلى */
+    text-align: center;
+    color: #8e9aa8;
+    font-size: 14px;
+    letter-spacing: 1px;
+    width: 100%;
+}
+
+.metaSplash strong{
+    font-size:22px;
+    background: linear-gradient(45deg, #ffe082, #ffb300, #b78103);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    display: block;
+    margin-top: 5px;
+    font-weight: 700;
+}
+
+/* ===== حاوية الهاتف (MOBILE CONTAINER) ===== */
+.container{
+    display:none;
     width:100%;
     max-width:414px; 
     height:100%;
-    /* مسافة أمان من الأعلى والأسفل */
-    padding: 40px 24px calc(24px + env(safe-area-inset-bottom, 30px)) 24px;
+    padding: 30px 24px calc(20px + env(safe-area-inset-bottom)) 24px;
     flex-direction:column;
     align-items:center;
     justify-content: space-between;
 }
 
-/* ===== الجزء العلوي (الشعار والمدخلات) ===== */
+.container.active{
+    display:flex;
+}
+
+/* ===== المحتوى الرئيسي لتسجيل الدخول ===== */
 .main-content {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex-grow: 1; /* جعل هذا الجزء يأخذ المساحة المتاحة ويدفع العناصر الأخرى للأسفل */
-    justify-content: center; /* توسيط الحقول عمودياً بشكل أنيق */
-    margin-bottom: 20px; /* ضمان عدم الالتصاق بالقسم السفلي */
+    margin-top: 30px;
 }
 
 .logo{
-    margin-bottom:35px;
+    margin-bottom:40px;
     display:flex;
     justify-content:center;
 }
@@ -105,19 +150,18 @@ body{
 
 .forgot{
     margin-top:22px;
-    margin-bottom: 10px; /* مسافة أمان تمنع الالتصاق بالعناصر السفلية تماماً */
     color:#ffb300;
     text-decoration:none;
     font-size:14px;
     font-weight: 500;
-    display: inline-block;
+    background: transparent;
+    border: none;
+    cursor: pointer;
 }
 
-/* ===== الجزء السفلي المعزول (إنشاء الحساب والحقوق) ===== */
 .bottom{
     width:100%;
     text-align:center;
-    margin-top: auto; /* دفع هذا القسم ليلتصق دائماً بالأسفل بشكل ثابت */
 }
 
 .create{
@@ -130,26 +174,145 @@ body{
     font-size:15px;
     font-weight: 600;
     cursor:pointer;
-    margin-bottom: 16px; /* مسافة واضحة ومريحة تفصل الزر عن كلمة Camorro */
 }
 
-.meta {
-    font-size: 15px;
-    color: #8e9aa8;
+.meta{
+    margin-top:15px;
+    font-size:14px;
+    color:#8e9aa8;
     font-weight: 500;
 }
 
-.meta strong {
-    font-size: 20px;
-    background: linear-gradient(45deg, #ffe082, #ffb300, #b78103);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
-    font-weight: 700;
-    margin-right: 4px;
+/* ===== التحقق الثنائي (2FA MOBILE) ===== */
+.twofa-container{
+    display:none;
+    width:100%;
+    max-width:414px;
+    height:100%;
+    padding: 40px 24px calc(20px + env(safe-area-inset-bottom)) 24px;
+    flex-direction:column;
+    justify-content:flex-start;
 }
 
-/* ===== شاشة التحميل (LOADING SCREEN) ===== */
+.twofa-container.active{
+    display:flex;
+}
+
+.back{
+    font-size:26px;
+    margin-bottom:25px;
+    cursor:pointer;
+    width:40px;
+    color: #ffb300;
+    text-align: right;
+}
+
+h1{
+    font-size:26px;
+    margin-bottom:8px;
+    font-weight: 700;
+    text-align: right;
+    width: 100%;
+}
+
+.sub{
+    font-size:14px;
+    color:#a0b0c0;
+    margin-bottom:30px;
+    text-align: right;
+    width: 100%;
+}
+
+.code-inputs{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    margin-bottom:15px;
+    direction: ltr; 
+}
+
+.code-inputs input{
+    width:48px;
+    height:54px;
+    text-align:center;
+    font-size:20px;
+    font-weight: bold;
+    border-radius:12px;
+    border:1.5px solid #22354f;
+    background:#16263d;
+    color:white;
+    outline:none;
+    transition: 0.2s;
+}
+
+.code-inputs input:focus{
+    border-color:#ffb300;
+}
+
+.error-msg{
+    color:#ff5252;
+    font-size:13px;
+    display:none;
+    margin-bottom:15px;
+    text-align:center;
+}
+
+.success-msg{
+    color:#4ade80;
+    font-size:14px;
+    display:none;
+    margin-top:15px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.info{
+    font-size:13px;
+    color:#8e9aa8;
+    margin:15px 0;
+    line-height:1.5;
+    text-align:center;
+}
+
+.link{
+    color:#ffb300;
+    font-size:14px;
+    margin-top:5px;
+    cursor:pointer;
+    text-align:center;
+    font-weight: 500;
+}
+
+.action-buttons {
+    margin-top: auto;
+    width: 100%;
+}
+
+.primary{
+    background: linear-gradient(90deg, #ffb300, #b78103);
+    color:#0f1c2e;
+    font-weight: bold;
+    height: 52px;
+    border: none;
+    border-radius: 26px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.secondary{
+    background:#16263d;
+    color:#8e9aa8;
+    height: 50px;
+    border: 1.5px solid #22354f;
+    border-radius: 25px;
+    font-size: 15px;
+    margin-top:12px;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* ===== شاشة تحميل ===== */
 .loading-screen{
     display:none;
     position:fixed;
@@ -188,26 +351,38 @@ body{
 </head>
 <body>
 
+<!-- شاشة البدء (SPLASH SCREEN) -->
+<div class="splash" id="splash">
+    <svg viewBox="0 0 100 100" fill="none">
+        <defs>
+            <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#FFE082"/>
+                <stop offset="30%" stop-color="#FFD54F"/>
+                <stop offset="70%" stop-color="#FFB300"/>
+                <stop offset="100%" stop-color="#B78103"/>
+            </linearGradient>
+        </defs>
+        <rect width="100" height="100" rx="28" fill="#16263d"/>
+        <circle cx="50" cy="50" r="34" stroke="url(#goldGrad)" stroke-width="3" fill="none" stroke-dasharray="14 6"/>
+        <path d="M30 66 V34 L50 52 L70 34 V66" stroke="url(#goldGrad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="metaSplash">
+        <span>من طرف</span>
+        <strong style="margin-top: 8px;">Camorro</strong>
+    </div>
+</div>
+
 <!-- شاشة انتظر/جاري التحميل -->
 <div class="loading-screen" id="loadingScreen">
     <div class="spinner"></div>
     <p id="loadingText">جاري التحقق من البيانات...</p>
 </div>
 
-<div class="container" id="loginContainer">
-    
-    <!-- محتوى التسجيل والمدخلات -->
+<!-- واجهة تسجيل الدخول الرئيسي -->
+<div class="container active" id="loginContainer">
     <div class="main-content">
         <div class="logo">
             <svg viewBox="0 0 100 100" fill="none">
-                <defs>
-                    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#FFE082"/>
-                        <stop offset="30%" stop-color="#FFD54F"/>
-                        <stop offset="70%" stop-color="#FFB300"/>
-                        <stop offset="100%" stop-color="#B78103"/>
-                    </linearGradient>
-                </defs>
                 <rect width="100" height="100" rx="28" fill="#16263d"/>
                 <circle cx="50" cy="50" r="34" stroke="url(#goldGrad)" stroke-width="3" fill="none" stroke-dasharray="14 6"/>
                 <path d="M30 66 V34 L50 52 L70 34 V66" stroke="url(#goldGrad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
@@ -221,39 +396,42 @@ body{
             <input type="password" id="password" placeholder="كلمة المرور">
         </div>
 
-        <button class="login-btn" onclick="checkFields()">تسجيل الدخول</button>
-        <a href="#" class="forgot">هل نسيت كلمة السر؟</a>
+        <button class="login-btn" id="loginBtn">تسجيل الدخول</button>
+        <button class="forgot" id="forgotBtn">هل نسيت كلمة السر؟</button>
     </div>
 
-    <!-- الجزء السفلي المعزول تلقائياً لمنع التداخل البصري -->
     <div class="bottom">
         <button class="create">إنشاء حساب جديد</button>
-        <div class="meta">من طرف <strong>Camorro</strong></div>
+        <div class="meta" style="margin-top:15px;">من طرف <strong style="color: #ffb300;">Camorro</strong></div>
     </div>
-    
 </div>
 
+<!-- واجهة التحقق الثنائي (2FA MOBILE) -->
+<div class="twofa-container" id="twofaContainer">
+    <div class="back" id="backBtn">→</div>
+    <h1>رمز التحقق</h1>
+    <div class="sub">أدخل الرمز المكون من 6 أرقام المرسل إلى هاتفك.</div>
+    
+    <div class="code-inputs">
+        <input type="text" maxlength="1" pattern="\d*">
+        <input type="text" maxlength="1" pattern="\d*">
+        <input type="text" maxlength="1" pattern="\d*">
+        <input type="text" maxlength="1" pattern="\d*">
+        <input type="text" maxlength="1" pattern="\d*">
+        <input type="text" maxlength="1" pattern="\d*">
+    </div>
+
+    <div class="error-msg" id="errorMsg">الرمز غير صحيح، يرجى المحاولة مرة أخرى.</div>
+    <div class="success-msg" id="successMsg">تم التحقق بنجاح! جاري الدخول...</div>
+
+    <div class="info">لم يصلك الرمز؟ يمكنك إعادة الإرسال خلال 55 ثانية</div>
+    <div class="link">إعادة إرسال الرمز</div>
+
+    <div class="action-buttons">
+        <button class="primary" id="verifyBtn">تأكيد الرمز</button>
+        <button class="secondary" id="cancel2faBtn">إلغاء</button>
+    </div>
+</div>
+
+<!-- البرمجة التفاعلية (JavaScript) -->
 <script>
-function checkFields() {
-    const user = document.getElementById('username').value;
-    const pass = document.getElementById('password').value;
-    const loadingScreen = document.getElementById('loadingScreen');
-
-    if(!user || !pass) {
-        alert("يرجى ملء حقول تسجيل الدخول");
-        return;
-    }
-
-    // إظهار شاشة التحميل أولاً
-    loadingScreen.style.display = "flex";
-
-    // محاكاة عملية التحقق لمدة 1.5 ثانية ثم إخفاء الشاشة
-    setTimeout(() => {
-        loadingScreen.style.display = "none";
-        alert("تم إدخال البيانات بنجاح!");
-    }, 1500);
-}
-</script>
-
-</body>
-</html>
