@@ -14,7 +14,7 @@
 }
 
 body{
-    background:#0f1c2e; 
+    background:#0f1c2e;
     color:white;
     height: 100vh;
     height: -webkit-fill-available;
@@ -24,7 +24,7 @@ body{
     overflow: hidden;
 }
 
-/* ===== شاشة البدء المعدلة (SPLASH APP) ===== */
+/* ===== شاشة البدء (SPLASH) ===== */
 .splash{
     position:fixed;
     top:0;
@@ -38,18 +38,23 @@ body{
     align-items:center;
     z-index:9999;
     transition: opacity 0.5s ease;
-    padding-bottom: env(safe-area-inset-bottom, 40px); 
+    padding-bottom: env(safe-area-inset-bottom, 40px);
+}
+
+.splash.hide{
+    opacity:0;
+    pointer-events:none;
 }
 
 .splash svg{
-    width:110px; 
+    width:110px;
     height:110px;
     margin-bottom: 20px;
 }
 
 .metaSplash {
     position: absolute;
-    bottom: calc(40px + env(safe-area-inset-bottom)); 
+    bottom: calc(40px + env(safe-area-inset-bottom));
     text-align: center;
     color: #8e9aa8;
     font-size: 14px;
@@ -67,11 +72,11 @@ body{
     font-weight: 700;
 }
 
-/* ===== حاوية الهاتف (MOBILE CONTAINER) ===== */
+/* ===== حاوية الهاتف (LOGIN) ===== */
 .container{
     display:none;
     width:100%;
-    max-width:414px; 
+    max-width:414px;
     height:100%;
     padding: 30px 24px calc(20px + env(safe-area-inset-bottom)) 24px;
     flex-direction:column;
@@ -83,7 +88,6 @@ body{
     display:flex;
 }
 
-/* ===== المحتوى الرئيسي لتسجيل الدخول ===== */
 .main-content {
     width: 100%;
     display: flex;
@@ -125,7 +129,7 @@ body{
 }
 
 .input-box input:focus {
-    border-color: #ffb300; 
+    border-color: #ffb300;
 }
 
 .input-box input::placeholder{
@@ -137,7 +141,7 @@ body{
     height:54px;
     border:none;
     border-radius:27px;
-    background: linear-gradient(90deg, #ffb300, #b78103); 
+    background: linear-gradient(90deg, #ffb300, #b78103);
     color:#0f1c2e;
     font-size:16px;
     font-weight: bold;
@@ -145,6 +149,10 @@ body{
     transition:0.3s;
     margin-top: 10px;
     box-shadow: 0 4px 15px rgba(255, 179, 0, 0.2);
+}
+
+.login-btn:active{
+    transform: scale(0.97);
 }
 
 .forgot{
@@ -182,7 +190,7 @@ body{
     font-weight: 500;
 }
 
-/* ===== التحقق الثنائي (2FA MOBILE) ===== */
+/* ===== التحقق الثنائي (2FA) ===== */
 .twofa-container{
     display:none;
     width:100%;
@@ -227,7 +235,7 @@ h1{
     gap:8px;
     justify-content:center;
     margin-bottom:15px;
-    direction: ltr; 
+    direction: ltr;
 }
 
 .code-inputs input{
@@ -311,7 +319,7 @@ h1{
     width: 100%;
 }
 
-/* ===== شاشة تحميل ===== */
+/* ===== شاشة التحميل (LOADING) ===== */
 .loading-screen{
     display:none;
     position:fixed;
@@ -320,13 +328,17 @@ h1{
     width:100vw;
     height:100vh;
     background:#0f1c2e;
-    z-index:99999; 
+    z-index:99999;
     flex-direction:column;
     align-items:center;
     justify-content:center;
     gap:15px;
-    touch-action: none; 
-    user-select: none;   
+    touch-action: none;
+    user-select: none;
+}
+
+.loading-screen.show{
+    display:flex;
 }
 
 .loading-screen .spinner{
@@ -350,7 +362,7 @@ h1{
 </head>
 <body>
 
-<!-- شاشة البدء (SPLASH SCREEN) -->
+<!-- شاشة البدء (SPLASH) -->
 <div class="splash" id="splash">
     <svg viewBox="0 0 100 100" fill="none">
         <defs>
@@ -371,13 +383,13 @@ h1{
     </div>
 </div>
 
-<!-- شاشة انتظر/جاري التحميل -->
+<!-- شاشة التحميل -->
 <div class="loading-screen" id="loadingScreen">
     <div class="spinner"></div>
     <p id="loadingText">جاري التحقق من البيانات...</p>
 </div>
 
-<!-- واجهة تسجيل الدخول الرئيسي -->
+<!-- واجهة تسجيل الدخول -->
 <div class="container active" id="loginContainer">
     <div class="main-content">
         <div class="logo">
@@ -389,10 +401,10 @@ h1{
         </div>
 
         <div class="input-box">
-            <input type="text" id="username" placeholder="اسم المستخدم أو البريد الإلكتروني">
+            <input type="text" id="username" placeholder="اسم المستخدم أو البريد الإلكتروني" autocomplete="off">
         </div>
         <div class="input-box">
-            <input type="password" id="password" placeholder="كلمة المرور">
+            <input type="password" id="password" placeholder="كلمة المرور" autocomplete="off">
         </div>
 
         <button class="login-btn" id="loginBtn">تسجيل الدخول</button>
@@ -405,15 +417,14 @@ h1{
     </div>
 </div>
 
-<!-- واجهة التحقق الثنائي (2FA MOBILE) -->
+<!-- واجهة التحقق الثنائي (2FA) -->
 <div class="twofa-container" id="twofaContainer">
     <div class="back" id="backBtn">→</div>
     <h1>رمز التحقق</h1>
     <div class="sub">أدخل الرمز المكون من 6 أرقام المرسل إلى هاتفك.</div>
-    
-    <div class="code-inputs">
+
+    <div class="code-inputs" id="codeInputs">
         <input type="text" maxlength="1" pattern="\d*" inputmode="numeric">
         <input type="text" maxlength="1" pattern="\d*" inputmode="numeric">
         <input type="text" maxlength="1" pattern="\d*" inputmode="numeric">
         <input type="text" maxlength="1" pattern="\d*" inputmode="numeric">
-        <input type="text" maxlength
