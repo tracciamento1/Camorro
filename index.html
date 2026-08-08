@@ -412,28 +412,8 @@ h1{
     <div class="sub">أدخل الرمز المكون من 6 أرقام المرسل إلى هاتفك.</div>
     
     <div class="code-inputs">
-        <input type="text" maxlength="1" pattern="\d*">
-        <input type="text" maxlength="1" pattern="\d*">
-        <input type="text" maxlength="1" pattern="\d*">
-        <input type="text" maxlength="1" pattern="\d*">
-        <input type="text" maxlength="1" pattern="\d*">
-        <input type="text" maxlength="1" pattern="\d*">
-    </div>
-
-    <div class="error-msg" id="errorMsg">الرمز غير صحيح، يرجى المحاولة مرة أخرى.</div>
-    <div class="success-msg" id="successMsg">تم التحقق بنجاح! جاري الدخول...</div>
-
-    <div class="info">لم يصلك الرمز؟ يمكنك إعادة الإرسال خلال 55 ثانية</div>
-    <div class="link">إعادة إرسال الرمز</div>
-
-    <div class="action-buttons">
-        <button class="primary" id="verifyBtn">تأكيد الرمز</button>
-        <button class="secondary" id="cancel2faBtn">إلغاء</button>
-    </div>
-</div>
-
-<!-- البرمجة التفاعلية (JavaScript) -->
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const splash = document.getElementById("splash");
-    const loginContainer = document.getElementById("loginContainer");
+        <input type="text" maxlength="1" pattern="\d*" inputmode="numeric">
+        <input type="text" maxlength="1" pattern="\d*" inputmode="numeric">
+        <input type="text" maxlength="1" pattern="\d*" inputmode="numeric">
+        <input type="text" maxlength="1" pattern="\d*" inputmode="numeric">
+        <input type="text" maxlength
