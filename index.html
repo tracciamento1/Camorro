@@ -17,7 +17,7 @@ body{
     background:#0f1c2e; 
     color:white;
     height: 100vh;
-    height: -webkit-fill-available; /* لحل مشاكل المتصفحات على الهواتف */
+    height: -webkit-fill-available;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -38,19 +38,18 @@ body{
     align-items:center;
     z-index:9999;
     transition: opacity 0.5s ease;
-    /* إضافة حماية سفلية لمنع اختفاء النصوص تحت حافة الشاشة */
     padding-bottom: env(safe-area-inset-bottom, 40px); 
 }
 
 .splash svg{
-    width:110px; /* تم تصغيره قليلاً ليتناسق */
+    width:110px; 
     height:110px;
     margin-bottom: 20px;
 }
 
 .metaSplash {
     position: absolute;
-    bottom: calc(40px + env(safe-area-inset-bottom)); /* رفع النص ديناميكياً للأعلى */
+    bottom: calc(40px + env(safe-area-inset-bottom)); 
     text-align: center;
     color: #8e9aa8;
     font-size: 14px;
@@ -435,3 +434,6 @@ h1{
 
 <!-- البرمجة التفاعلية (JavaScript) -->
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const splash = document.getElementById("splash");
+    const loginContainer = document.getElementById("loginContainer");
