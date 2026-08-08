@@ -1,0 +1,12 @@
+{
+  "name": "game-online-server",
+  "version": "1.0.0",
+  "description": "Multiplayer Server for 50 Players",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}
