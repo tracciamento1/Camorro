@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>تسجيل دخول كامورو</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, Cantarell, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body{
+    background:#0f1c2e; 
+    color:white;
+    height: 100vh;
+    height: -webkit-fill-available;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow: hidden;
+}
+
+/* ===== حاوية الهاتف ===== */
+.container{
+    display:flex;
+    width:100%;
+    max-width:414px; 
+    height:100%;
+    /* مسافة أمان من الأعلى والأسفل */
+    padding: 40px 24px calc(24px + env(safe-area-inset-bottom, 30px)) 24px;
+    flex-direction:column;
+    align-items:center;
+    justify-content: space-between;
+}
+
+/* ===== الجزء العلوي (الشعار والمدخلات) ===== */
+.main-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1; /* جعل هذا الجزء يأخذ المساحة المتاحة ويدفع العناصر الأخرى للأسفل */
+    justify-content: center; /* توسيط الحقول عمودياً بشكل أنيق */
+    margin-bottom: 20px; /* ضمان عدم الالتصاق بالقسم السفلي */
+}
+
+.logo{
+    margin-bottom:35px;
+    display:flex;
+    justify-content:center;
+}
+
+.logo svg{
+    width:90px;
+    height:90px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border-radius: 24px;
+}
+
+.input-box{
+    width:100%;
+    margin-bottom:16px;
+}
+
+.input-box input{
+    width:100%;
+    height:56px;
+    border: 1.5px solid #22354f;
+    border-radius:16px;
+    background:#16263d;
+    color:white;
+    font-size:15px;
+    padding:0 18px;
+    outline:none;
+    transition: 0.2s;
+    text-align: right;
+}
+
+.input-box input:focus {
+    border-color: #ffb300; 
+}
+
+.input-box input::placeholder{
+    color:#738499;
+}
+
+.login-btn{
+    width:100%;
+    height:54px;
+    border:none;
+    border-radius:27px;
+    background: linear-gradient(90deg, #ffb300, #b78103); 
+    color:#0f1c2e;
+    font-size:16px;
+    font-weight: bold;
+    cursor:pointer;
+    transition:0.3s;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(255, 179, 0, 0.2);
+}
+
+.forgot{
+    margin-top:22px;
+    margin-bottom: 10px; /* مسافة أمان تمنع الالتصاق بالعناصر السفلية تماماً */
+    color:#ffb300;
+    text-decoration:none;
+    font-size:14px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+/* ===== الجزء السفلي المعزول (إنشاء الحساب والحقوق) ===== */
+.bottom{
+    width:100%;
+    text-align:center;
+    margin-top: auto; /* دفع هذا القسم ليلتصق دائماً بالأسفل بشكل ثابت */
+}
+
+.create{
+    width:100%;
+    height:50px;
+    border:1.5px solid #ffb300;
+    border-radius:25px;
+    background:transparent;
+    color:#ffb300;
+    font-size:15px;
+    font-weight: 600;
+    cursor:pointer;
+    margin-bottom: 16px; /* مسافة واضحة ومريحة تفصل الزر عن كلمة Camorro */
+}
+
+.meta {
+    font-size: 15px;
+    color: #8e9aa8;
+    font-weight: 500;
+}
+
+.meta strong {
+    font-size: 20px;
+    background: linear-gradient(45deg, #ffe082, #ffb300, #b78103);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    font-weight: 700;
+    margin-right: 4px;
+}
+
+/* ===== شاشة التحميل (LOADING SCREEN) ===== */
+.loading-screen{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    background:#0f1c2e;
+    z-index:99999; 
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:15px;
+    touch-action: none; 
+    user-select: none;   
+}
+
+.loading-screen .spinner{
+    width:42px;
+    height:42px;
+    border:4px solid #16263d;
+    border-top-color:#ffb300;
+    border-radius:50%;
+    animation:spin 0.8s linear infinite;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg);}
+}
+
+.loading-screen p{
+    font-size:15px;
+    color:#8e9aa8;
+}
+</style>
+</head>
+<body>
+
+<!-- شاشة انتظر/جاري التحميل -->
+<div class="loading-screen" id="loadingScreen">
+    <div class="spinner"></div>
+    <p id="loadingText">جاري التحقق من البيانات...</p>
+</div>
+
+<div class="container" id="loginContainer">
+    
+    <!-- محتوى التسجيل والمدخلات -->
+    <div class="main-content">
+        <div class="logo">
+            <svg viewBox="0 0 100 100" fill="none">
+                <defs>
+                    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#FFE082"/>
+                        <stop offset="30%" stop-color="#FFD54F"/>
+                        <stop offset="70%" stop-color="#FFB300"/>
+                        <stop offset="100%" stop-color="#B78103"/>
+                    </linearGradient>
+                </defs>
+                <rect width="100" height="100" rx="28" fill="#16263d"/>
+                <circle cx="50" cy="50" r="34" stroke="url(#goldGrad)" stroke-width="3" fill="none" stroke-dasharray="14 6"/>
+                <path d="M30 66 V34 L50 52 L70 34 V66" stroke="url(#goldGrad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <div class="input-box">
+            <input type="text" id="username" placeholder="اسم المستخدم أو البريد الإلكتروني">
+        </div>
+        <div class="input-box">
+            <input type="password" id="password" placeholder="كلمة المرور">
+        </div>
+
+        <button class="login-btn" onclick="checkFields()">تسجيل الدخول</button>
+        <a href="#" class="forgot">هل نسيت كلمة السر؟</a>
+    </div>
+
+    <!-- الجزء السفلي المعزول تلقائياً لمنع التداخل البصري -->
+    <div class="bottom">
+        <button class="create">إنشاء حساب جديد</button>
+        <div class="meta">من طرف <strong>Camorro</strong></div>
+    </div>
+    
+</div>
+
+<script>
+function checkFields() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+    const loadingScreen = document.getElementById('loadingScreen');
+
+    if(!user || !pass) {
+        alert("يرجى ملء حقول تسجيل الدخول");
+        return;
+    }
+
+    // إظهار شاشة التحميل أولاً
+    loadingScreen.style.display = "flex";
+
+    // محاكاة عملية التحقق لمدة 1.5 ثانية ثم إخفاء الشاشة
+    setTimeout(() => {
+        loadingScreen.style.display = "none";
+        alert("تم إدخال البيانات بنجاح!");
+    }, 1500);
+}
+</script>
+
+</body>
+</html>
